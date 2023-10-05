@@ -7,16 +7,16 @@
     使用 # 来表示1-6级标题  
 
 ***
-## 代码
-```
-使用六个 ``` ```
-```
-
-
-***
 ## 字体颜色和格式
-<span style="font-size: 17px; color: red;font-weight: bold;">还有更多的细节要去探索一下</span> 
 
+<span style="font-size: 17px; color: red;font-weight: bold;">
+还有更多的细节要去探索一下
+</span> 
+```
+<span style="font-size: 17px; color: red;font-weight: bold;">
+还有更多的细节要去探索一下
+</span> 
+```
 
 
 ***
@@ -35,11 +35,13 @@
     + ___粗斜体文本___
   
 3. 分割线的使用
-    + ***
-    + * * *
-    + *****
-    + - - -
-    + ----------
+```    
+     ***
+     * * *
+     *****
+     - - -
+     ----------
+```
 
 4. 删除线
     给字体两边加入两个波浪号  
