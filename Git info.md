@@ -21,7 +21,7 @@ github 是一个远程存储仓库 使用`git clone`克隆到本地文件夹进�
 ***
 ## 具体操作流程
 
-
+如果使用 vscode 下面这些操作都比较简便 但要注意每次都要写message
 #### 1. 新建文件夹（工作区），在终端切换到当前目录，进行一些初始化的设置
 
 
@@ -60,6 +60,7 @@ git commit -a -m "xxxxxxx"
 最前面有一串哈希码 表示一次提交
 ```shell
 git log
+# 进来后按 Q 退出
 ```
 #### 5. 忽略某些文件上传
 
@@ -102,13 +103,25 @@ git merge temp
 
 #### 7. 推送到远程仓库
 
-以下命令可以查看本地仓库和哪些远程仓库有联系
+远程推送需要生成个人访问的token (貌似？)
 origin 表示远程仓库的名字（默认都会用origin表示远程仓库的名字）
 ```shell
+
+# 以下命令可以查看本地仓库和哪些远程仓库有联系
 git remote -v
+
+# 将本地仓库分支改名为 main
+git branch -M main
+
+# 将远程仓库重命名为 origin  当然也可以push到其他建好的仓库
+git remote add origin https//github.com/xxx/xxx.git
+
+# push origin 表示远程仓库 main 表示本地仓库
+git push -u origin main
+
 ```
 
-远程推送需要生成个人访问的token
+
 
 
 
