@@ -8,6 +8,7 @@
 </p>
 
 
+
 ctrl+shift+p 唤起命令输入行  
 
 ctrl+i 选择代码再使用唤起gpt  
