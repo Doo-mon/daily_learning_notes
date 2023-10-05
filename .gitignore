@@ -4,10 +4,18 @@
 
 # 最后跟 反斜杠 表示忽略的是目录
 ignore_files/
+cpp_codes/
 
 # 取反
 # !ignore_files/diary.md
 
+
+
+# 忽略所有以这些为后缀的文件
+*.cpp
+*.h
+*.exe
+*json
 # *.md
 # *.jpg
 # *.png
