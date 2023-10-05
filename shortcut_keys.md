@@ -7,7 +7,8 @@
 <img src=images\keyboard-shortcuts-windows.png width=100% height=700>
 </p>
 
-s
+sss
+ss
 
 ctrl+shift+p 唤起命令输入行  
 
