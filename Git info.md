@@ -2,6 +2,7 @@
 
 github 是一个远程存储仓库 使用`git clone`克隆到本地文件夹进行修改不会影响远程仓库上的代码，同时也能方便多人协作，每个人负责不同的板块。
 
+***
 ## 简要概述
 <p align="center">
 <img src=./images/git/github_workflow.png width=50%>
@@ -17,7 +18,7 @@ github 是一个远程存储仓库 使用`git clone`克隆到本地文件夹进�
 在github上使用压缩包下载是不会包括.git文件夹的，所有要使用 git clone 的方法
 同时，注意在github上直接创建的仓库，主枝名字叫做main，而本地直接init的是master
 
-
+***
 ## 具体操作流程
 
 
@@ -28,7 +29,7 @@ github 是一个远程存储仓库 使用`git clone`克隆到本地文件夹进�
 git config --global user.name "Doo-mon"
 git config --global user.email zhanzhh6@mail2.sysu.edu.cn
 # 初始化 输入后会多一个 .git 的文件夹
-# 一般默认会显示  master 主分支
+# 一般默认会显示  master 主分支 
 git init
 ```
 
@@ -111,7 +112,17 @@ git remote -v
 
 
 
+***
+## 遇到的问题
 
+1. 在 push 到远端仓库的时候 遇到错误  Recv failure: Connection was reset
+   参考来源：https://blog.csdn.net/pan_1214_/article/details/132021819
 
-
+    __解决办法：__
+    首先在cmd 中 使用 `ping www.github.com` 得到服务器地址
+    然后找到Windows中hosts配置文件 `C:\Windows\System32\drivers\etc` 这个路径下，如果记事本无法打开那么就先将hosts文件复制一份到桌面，然后将其后缀改成txt，在里面加上下面的IP和域名后将后缀名删除，将hosts.txt还原成hosts，在覆盖原来的hosts文件
+    加入到hosts文件中：  `20.205.243.166 github.com` 
+    __解释：__
+    造成这个报错的原因主要是网络连接问题，GitHub的服务器在外国，或者是防火墙代理、DNS解析的问题。
+    将"20.205.243.166 github.com"添加到hosts文件中是一种手动指定域名与IP地址的映射关系的方法。这样做的目的是绕过DNS解析过程，直接将github.com这个域名映射到指定的IP地址，即20.205.243.166。这样，当你在浏览器或其他网络应用中访问github.com时，系统将不再向DNS服务器查询域名的IP地址，而是直接使用你在hosts文件中指定的IP地址。
 
