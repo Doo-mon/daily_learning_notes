@@ -20,6 +20,16 @@
 
 
 ***
+## 图片
+
+仿照下面这些代码  注意图像存放的位置
+<p align="center">
+<img src=./images/xxxx.png width=50%>
+</p>
+
+
+
+***
 ## 段落格式
 1. 段落换行使用 **两个空格**  或者  **空行**
    还可以使用 ```<br />```进行强制换行
@@ -97,13 +107,7 @@
 [Lisa 项目地址](https://github.com/dvlab-research/LISA)
 
 
-***
-## 图片
 
-仿照下面这些代码  注意图像存放的位置
-<p align="center">
-<img src=./images/xxxx.png width=50%>
-</p>
 
 
 ***

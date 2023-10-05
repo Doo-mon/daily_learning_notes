@@ -3,6 +3,12 @@
 ***
 ## vscode
 
+<p align="center">
+<img src=images\keyboard-shortcuts-windows.png width=100% height=1000>
+</p>
+
+
+
 ctrl+shift+p 唤起命令输入行  
 
 ctrl+i 选择代码再使用唤起gpt  
