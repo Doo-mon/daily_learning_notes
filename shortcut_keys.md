@@ -26,6 +26,12 @@ shift+alt+a 块注释
 
 ctrl+tab 在打开的文件中切换
 
+**闲的无聊整了很久的快捷键，为了方便push**
+（下面的数字都是小键盘）
+首先进行修改，然后用 ctrl+1 切换到侧边栏 上下移动 enter输入信息
+然后使用 ctrl+2 暂存更改 ctrl+3 commit提交 ctrl+enter push上远端仓库
+
+
 
 
 ***
