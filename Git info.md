@@ -129,6 +129,7 @@ git push -u origin main
 ## 遇到的问题
 
 1. 在 push 到远端仓库的时候 遇到错误  Recv failure: Connection was reset
+   
    参考来源：https://blog.csdn.net/pan_1214_/article/details/132021819
 
     __解决办法：__
@@ -137,9 +138,9 @@ git push -u origin main
     加入到hosts文件中：  `20.205.243.166 github.com` 
     __解释：__
     造成这个报错的原因主要是网络连接问题，GitHub的服务器在外国，或者是防火墙代理、DNS解析的问题。
-    将"20.205.243.166 github.com"添加到hosts文件中是一种手动指定域名与IP地址的映射关系的方法。这样做的目的是绕过DNS解析过程，直接将github.com这个域名映射到指定的IP地址，即20.205.243.166。这样，当你在浏览器或其他网络应用中访问github.com时，系统将不再向DNS服务器查询域名的IP地址，而是直接使用你在hosts文件中指定的IP地址。
-
-    上面那个搞完还是会有问题 尝试下面这句
+    将"20.205.243.166 github.com"添加到hosts文件中是一种手动指定域名与IP地址的映射关系的方法。这样做的目的是绕过DNS解析过程，直接将github.com这个域名映射到指定的IP地址，即20.205.243.166。这样，当你在浏览器或其他网络应用中访问github.com时，系统将不再向DNS服务器查询域名的IP地址，而是直接使用你在hosts文件中指定的IP地址。  
+   <br />
+    __上面那个搞完还是会有问题 尝试命令行运行下面这两句__
     ```
     git config --global http.proxy http://127.0.0.1:7890
     git config --global https.proxy http://127.0.0.1:7890
