@@ -1,4 +1,14 @@
-*.md
-*.jpg
-*.png
-*.txt
+# https://github.com/github/gitignore
+# 上面这个网站包括了很多语言的gitignore文件，可以直接拿来用
+
+
+# 最后跟 反斜杠 表示忽略的是目录
+ignore_files/
+
+# 取反
+# !ignore_files/diary.md
+
+# *.md
+# *.jpg
+# *.png
+# *.txt
