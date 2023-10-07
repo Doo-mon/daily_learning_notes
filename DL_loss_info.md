@@ -6,6 +6,7 @@
 ### Cross Entropy Loss 交叉熵损失
 
 参考来源：https://blog.csdn.net/ltochange/article/details/117919900
+
 也称做对数损失  当模型产生了预测值之后，将对类别的预测概率与真实值（0或1）进行比较，计算所产生的损失
 
 $$
