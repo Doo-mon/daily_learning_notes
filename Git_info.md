@@ -149,4 +149,25 @@ git push -u origin main
     git config --global https.proxy http://127.0.0.1:7890
 
     ```
+2. 遇到`git clone` 超时的情况
+   或者有这个报错
+   gnutls_handshake() failed: The TLS connection was non-properly terminated.
+   
+   
+   来源：https://blog.csdn.net/songtianlun/article/details/115611734 
+   
+   可能是代理出现了问题 尝试重置一下代理
+   ```
+   git config --global  --unset https.https://github.com.proxy 
+   git config --global  --unset http.https://github.com.proxy 
+   ```
+   若需使用代理，http协议和socket协议的配置分别如下，以8080端口为例：
+   ```
+   # http
+   git config --global http.https://github.com.proxy http://127.0.0.1:8080
+   git config --global https.https://github.com.proxy https://127.0.0.1:8080
 
+   # socket
+   git config --global http.proxy 'socks5://127.0.0.1:8080'
+   git config --global https.proxy 'socks5://127.0.0.1:8080'
+   ```
