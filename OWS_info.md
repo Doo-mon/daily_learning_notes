@@ -8,6 +8,13 @@ __tokenizer 的作用__
 5. 控制序列长度: tokenizer通常具有截断（truncation）和填充（padding）文本的功能，以确保输入序列具有一致的长度。这对于批量处理数据和确保模型的输入不超出最大长度限制非常重要
 
 
+__简单记录下目前的进展__
+现在要将图片生成阶段和训练阶段分开
+
+要为生成的图像写一个dataset.py
+还需要改一个model.py 让其能够输出相对应的loss
+
+
 
 
 
@@ -26,13 +33,15 @@ __tokenizer 的作用__
 ## Step.1 首先将 Grounded-Segment-Anything 和 MiniGpt4 在github上下载下来
 [Grounded-sam 项目地址](https://github.com/IDEA-Research/Grounded-Segment-Anything)
 [Minigpt4 项目地址](https://github.com/Vision-CAIR/MiniGPT-4)
+[Minigpt5 项目地址](https://github.com/eric-ai-lab/MiniGPT-5)
 [Lisa 项目地址](https://github.com/dvlab-research/LISA)
 
-git 下载代码：
+
+
+git clone 代码：
 ```shell
 git clone https://github.com/IDEA-Research/Grounded-Segment-Anything.git 
 git clone https://github.com/Vision-CAIR/MiniGPT-4.git
-
 ```
 
 
