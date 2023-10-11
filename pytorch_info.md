@@ -36,7 +36,7 @@
 
     https://zhuanlan.zhihu.com/p/365414757
     `x.shape` 用这个可以比较容易地看出区别 
-    [1,3]
+    
 
     **dim 可选范围 原张量维度+1**
     ```python
