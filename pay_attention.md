@@ -2,7 +2,7 @@
 
 
 ***
-functools 模块中的 partial 函数用于创建一个新的函数，它是原始函数的一个部分应用，固定了部分参数的值，使得调用新函数时不再需要提供这些参数。这在函数式编程中很有用，尤其是在需要创建带有特定配置或默认参数的函数时
+**functools 模块中的 partial 函数用于创建一个新的函数，它是原始函数的一个部分应用，固定了部分参数的值，使得调用新函数时不再需要提供这些参数。这在函数式编程中很有用，尤其是在需要创建带有特定配置或默认参数的函数时**
 
 ```python
 from functools import partial
@@ -22,7 +22,7 @@ partial 还常用于简化回调函数，特别是在使用 map 或 filter 等�
 
 ***
 
-1. 使用 cv2 导入图像
+1. **使用 cv2 导入图像**
 `img = cv2.imread(img_path)`导入的图片是bgr颜色通道  
 而其他图像处理库和工具的颜色通道通常是rgb  
 所以需要使用`img = cv2.cvtColor(img,cv2.COLOR_BGR2RGB)`进行转换
@@ -30,7 +30,7 @@ partial 还常用于简化回调函数，特别是在使用 map 或 filter 等�
 
 
 
-2. 使用 PIL.Image 导入图像
+2. **使用 PIL.Image 导入图像**
 `img = Image.open(img_path)`
 使用这个导入的格式是RGB通道
 返回一个Pillow的Image对象，该对象可以方便地进行各种图像处理操作，如调整大小、旋转、滤镜应用等
@@ -40,11 +40,11 @@ partial 还常用于简化回调函数，特别是在使用 map 或 filter 等�
 
 ***
 
-CUDA_VISIBLE_DEVICES=0 是一个环境变量设置，通常用于控制在使用 NVIDIA 的 CUDA GPU 进行计算时，指定要使用哪个 GPU 设备。这个设置对于多GPU系统或需要特定GPU的应用程序非常有用。
+**CUDA_VISIBLE_DEVICES=0 是一个环境变量设置**，通常用于控制在使用 NVIDIA 的 CUDA GPU 进行计算时，指定要使用哪个 GPU 设备。这个设置对于多GPU系统或需要特定GPU的应用程序非常有用。
 
 ***
 
-用于递归地删除 save_dir 目录以及目录内的所有内容
+**用于递归地删除 save_dir 目录以及目录内的所有内容**
 ```python
 import os
 import shutil
