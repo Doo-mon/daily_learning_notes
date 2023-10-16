@@ -2,8 +2,23 @@
 
 
 ***
+functools 模块中的 partial 函数用于创建一个新的函数，它是原始函数的一个部分应用，固定了部分参数的值，使得调用新函数时不再需要提供这些参数。这在函数式编程中很有用，尤其是在需要创建带有特定配置或默认参数的函数时
 
+```python
+from functools import partial
 
+def power(base, exponent):
+    return base ** exponent
+
+square = partial(power, exponent=2)
+cube = partial(power, exponent=3)
+
+print(square(4))  # 输出 16
+print(cube(2))    # 输出 8
+```
+在这个示例中，我们使用 functools.partial 固定了 power 函数的 exponent 参数，创建了新的函数 square 和 cube，分别代表平方和立方操作。这样，在调用 square 和 cube 时就不需要再传递 exponent 参数了。
+
+partial 还常用于简化回调函数，特别是在使用 map 或 filter 等高阶函数时，可以通过部分应用来减少冗余的参数传递。
 
 ***
 
