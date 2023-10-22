@@ -1,13 +1,17 @@
-## 这个文档用来记录git的使用 和 遇到的一些常见问题
+## 这个文档用来记录 git的使用 和 遇到的一些常见问题
 
-github 是一个远程存储仓库 使用`git clone`克隆到本地文件夹进行修改不会影响远程仓库上的代码，同时也能方便多人协作，每个人负责不同的板块。
+github 是一个远程存储仓库 使用`git clone`**克隆到本地文件夹进行修改不会影响远程仓库上的代码**，同时也能方便多人协作，每个人负责不同的板块。
 
+[简要流程](#简要概述)
+[具体流程](#具体操作流程)
+[远程](#远程仓库操作)
+[分支](#6-分支操作)
 
 [问题](#遇到的问题)
 
 
 ***
-## 
+## 远程仓库操作
 一般你 git clone 了别人的项目 想要重新 git push 到自己的仓库里面
 
 
@@ -21,6 +25,7 @@ github 是一个远程存储仓库 使用`git clone`克隆到本地文件夹进�
 `git remote add myrepo <新的仓库URL>`
 这会将一个名为myrepo的新远程仓库添加到你的配置中，使用指定的URL
 
+移除远程仓库
 `git remote remove myrepo`
 
 ***
@@ -49,9 +54,9 @@ github 是一个远程存储仓库 使用`git clone`克隆到本地文件夹进�
 ```shell
 git config --global user.name "Doo-mon"
 git config --global user.email zhanzhh6@mail2.sysu.edu.cn
-# 初始化 输入后会多一个 .git 的文件夹
-# 一般默认会显示  master 主分支 
-git init
+
+# 一般默认会显示 master 主分支 
+git init # 初始化 输入后会多一个 .git 的文件夹
 ```
 
 #### 2. 查看状态
@@ -64,8 +69,10 @@ git status
 #### 3. 添加到暂存区和本地仓库
 
 ```shell
-# 具体添加某个文件到暂存区
+# 具体添加某个文件到暂存区  
 git add xxxx.xxx
+# 或者用 git add . 添加全部的文件
+git add .
 
 # 后面的内容是必填的，用来区分每次的提交
 git commit -m "xxxxxxx"
@@ -80,23 +87,22 @@ git commit -a -m "xxxxxxx"
 使用该命令，可以看到每次提交的作者，日期，提交信息
 最前面有一串哈希码 表示一次提交
 ```shell
-git log
-# 进来后按 Q 退出
+git log # 进来后按 Q 退出
 ```
 #### 5. 忽略某些文件上传
 
 ```shell
-# 创建文件
-touch .gitignore
+touch .gitignore # 创建文件
 # 在上诉文件中添加图片的名字即可
 ```
 
 #### 6. 分支操作
 
 假设我们需要为仓库新添文件，但是不确定该文件是否需要，我们就可以在主分支的基础上创建一个新的分支，等新分支整理好后再合并进来
-
+**新分支的创建通常是为了在你的项目中添加新的功能或进行实验性工作。**
+这允许你在不影响主分支的情况下进行并行开发和实验性工作。分支在Git中是非常强大且常用的功能，它使团队能够协同工作，同时保持项目的稳定性。
 ```shell
-# 后面是分支名 my-branch
+# 创建分支 后面的my-branch是分支名 但不会切换到该分支
 git branch my-branch
 
 # 下面的命令用来查看
@@ -110,7 +116,6 @@ git branch -d my-branch
 
 # 创建新分支，并且马上切换到新的分支
 git checkout -b temp
-
 ```
 下面是合并的操作
 ```shell
@@ -119,7 +124,6 @@ git checkout master
 
 # 下面的命令会将temp分支合并到master分支
 git merge temp
-
 ```
 
 #### 7. 推送到远程仓库
@@ -139,7 +143,6 @@ git remote add origin https//github.com/xxx/xxx.git
 
 # push origin 表示远程仓库 main 表示本地仓库
 git push -u origin main
-
 ```
 
 
