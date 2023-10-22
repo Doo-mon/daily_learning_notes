@@ -5,6 +5,24 @@ github 是一个远程存储仓库 使用`git clone`克隆到本地文件夹进�
 
 [问题](#遇到的问题)
 
+
+***
+## 
+一般你 git clone 了别人的项目 想要重新 git push 到自己的仓库里面
+
+
+查看现有远程仓库配置  这将列出所有已配置的远程仓库及其URL
+`git remote -v`
+
+切换远程仓库的地址
+`git remote set-url origin <新的仓库URL>`
+
+添加新的远程仓库别名
+`git remote add myrepo <新的仓库URL>`
+这会将一个名为myrepo的新远程仓库添加到你的配置中，使用指定的URL
+
+`git remote remove myrepo`
+
 ***
 ## 简要概述
 <p align="center">
@@ -147,7 +165,6 @@ git push -u origin main
     ```
     git config --global http.proxy http://127.0.0.1:7890
     git config --global https.proxy http://127.0.0.1:7890
-
     ```
 2. 遇到`git clone` 超时的情况
    或者有这个报错
