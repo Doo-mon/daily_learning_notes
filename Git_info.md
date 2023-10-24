@@ -178,9 +178,11 @@ git push -u origin main
    
    可能是代理出现了问题 尝试重置一下代理
    ```
-   git config --global  --unset https.https://github.com.proxy 
-   git config --global  --unset http.https://github.com.proxy 
+   git config --global  --unset https.proxy 
+   git config --global  --unset http.proxy 
    ```
+
+   **不要乱设置 按照实际输入 不要直接输入下面这几句话**
    若需使用代理，http协议和socket协议的配置分别如下，以8080端口为例：
    ```
    # http
