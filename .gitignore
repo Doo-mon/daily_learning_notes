@@ -10,12 +10,17 @@ cpp_codes/
 # !ignore_files/diary.md
 
 
+# 忽略所有以这些为前缀的文件
+temp_*
+
+
 
 # 忽略所有以这些为后缀的文件
+*.pth
 *.cpp
 *.h
 *.exe
-*json
+*.json
 # *.md
 # *.jpg
 # *.png
