@@ -9,7 +9,35 @@
 
 
 ***
-### 查看系统变量
+### 联合使用nohup和&让进程后台运行
+
+一般会习惯性写在 .sh 文件中
+
+1. nohup
+用途：不挂断地运行命令。
+语法：nohup Command [ Arg ...] [&]
+无论是否将 nohup 命令的输出重定向到终端，输出都将附加到当前目录的 nohup.out 文件中。
+如果当前目录的 nohup.out 文件不可写，输出重定向到 $HOME/nohup.out 文件中。
+如果没有文件能创建或打开以用于追加，那么 Command 参数指定的命令不可调用。
+2. &
+用途：在后台运行
+
+**用法进阶：不输出日志信息到nohup.out**
+在某些进程中，由于日志量极大，可能达到几百G占满磁盘空间，所以在输出日志是，我们需要筛选输出或者不输出。
+1、只输出错误信息到日志文件
+`nohup ./test.out >/dev/null 2>log & `
+2、所有信息都不输出
+`nohup ./test.out >/dev/null 2>&1 & `
+
+
+**还有比较多的内容没有完全理解 有空可以继续看一下这个连接的内容**
+来源：https://sunkingyang.blog.csdn.net/article/details/113880132?spm=1001.2014.3001.5502
+
+
+
+
+***
+### 查看和修改系统变量
 
 查看特定的变量——  VARIABLE_NAME 为需要查看的变量名字
 `echo $VARIABLE_NAME`
@@ -18,6 +46,20 @@
 `env`
 也可以使用以下方法查看特定的变量
 `env | grep VARIABLE_NAME`
+
+
+直接在终端修改系统变量 （登出后就失效）
+`export PATH=PATH:/xxxxxx  # 表示在原有PATH上面添加新的PATH 冒号起到分隔作用` 
+
+直接修改文件
+修改 ~/.bashrc 或 ~/.bash_profile或系统级别的/etc/profile，在文件中加入环境变量
+```shell
+vim ~/.bashrc 
+export PATH=/opt/ActivePython-2.7/bin:$PATH
+source ~/.bashrc 
+```
+注：Source命令也称为“点命令”，也就是一个点符号（.）source命令通常用于重新执行刚修改的初始化文件，使之立即生效，而不必注销并重新登录
+
 
 **一些常见的系统变量解释：**
     
