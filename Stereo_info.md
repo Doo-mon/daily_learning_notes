@@ -45,7 +45,7 @@ or
 
 
 ***
-## Step.0 一些相关信息的网站，放在这里方便查询
+## 0 一些相关信息的网站，放在这里方便查询
 [1]()
 [2]()
 [3]()
@@ -58,7 +58,7 @@ or
 
 
 ***
-## Step.1 从别人论文中学习到的idea
+## 1 从别人论文中学习到的idea
 
 1. CVGSR: Stereo Image Super-Resolution with Cross-View Guidance
     这篇文章是暂时还没有发表的
@@ -89,7 +89,7 @@ or
 
 
 ***
-## Step.2 
+## 2 
 
 #### 对于S-NeRV中的各个文件夹
 注意现在的S-NeRV是基于E-NeRV的代码进行修改的，因为E-NeRV的代码更加系统
