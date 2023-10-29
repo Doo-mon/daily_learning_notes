@@ -7,12 +7,12 @@
 
 注：一般这个情况会出现在windows操作系统中
 
-将vscode的默认终端改为Command Prompt 
-**如果有 git bash 的选项 改为这个会更好  这个支持在windows中输入linux的命令**
+将 vscode 的默认终端改为 Command Prompt
+**注意： 如果有 git bash 的选项 改为这个会更好  这个支持在windows中输入linux的命令**
 
-1. 打开vscode 的设置
-2. 在搜索栏 搜索 shell:windows
-3. 将默认终端从null改为Command Prompt
+1. 打开 vscode 的设置
+2. 在 搜索栏 搜索 shell:windows
+3. 将默认终端从 null 改为 Command Prompt
    
 打开新的终端即可
 

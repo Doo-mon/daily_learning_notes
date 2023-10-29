@@ -6,6 +6,7 @@ github 是一个远程存储仓库 使用`git clone`**克隆到本地文件夹�
 [具体流程](#具体操作流程)
 [远程](#远程仓库操作)
 [分支](#6-分支操作)
+[大文件管理](#大文件管理-git-lfs)
 
 [问题](#遇到的问题)
 
@@ -43,6 +44,49 @@ github 是一个远程存储仓库 使用`git clone`**克隆到本地文件夹�
 #### 3. github相关
 在github上使用压缩包下载是不会包括.git文件夹的，所有要使用 git clone 的方法
 同时，注意在github上直接创建的仓库，主枝名字叫做main，而本地直接init的是master
+
+
+***
+## 大文件管理  git lfs
+
+   **git 适合用来管理文本文件  （.sh .txt  .cpp .go .js 等等**
+   **但不适合用来管理二进制文件 (.zip .png .docx .dpf .pptx 等等)**
+   
+   尤其当这些二进制文件频繁变更的时候  这时不但库大小会增加 下载速度也会变的很慢
+   主要原因： 文本文件git使用增量保存  二进制文件只能全量保存 这样每个提交的版本都会多一个副本
+   git是分布式版本管理系统  所有的历史记录都会下载到本地（默认情况下）
+
+
+   **工作流简介：**
+   先 install git lfs  然后 clone 项目到本地
+   再仓库目录下开启lfs功能 设置需要跟踪的大文件 然后就可以按照正常的git命令操作
+
+
+   **命令代码：**
+   1. 进入到项目目录 然后开启lfs
+   `git lfs install`  这条命令会在项目目录中安装几个钩子脚本
+   2. 然后设置跟踪的文件
+   ```shell
+   # 跟踪当前目录下所有的png文件
+   git lfs track '*.png'
+   # 跟踪所有目录下的png文件
+   git lfs track '**/*.png'
+   # 跟踪res目录下所有文件和子目录
+   git lfs track 'res/**'
+   # 跟踪res目录下所有的文件 不含子目录
+   git lfs track 'res/*'
+
+   # 跟踪当前目录下已经存在的所有zip文件  执行完这条命令后 新增加的文件不会被跟踪
+   git lfs track *.zip
+
+   # 可以查看配置
+   cat .gitattributes
+   ```
+
+   
+
+
+
 
 ***
 ## 具体操作流程
@@ -193,3 +237,11 @@ git push -u origin main
    git config --global http.proxy 'socks5://127.0.0.1:8080'
    git config --global https.proxy 'socks5://127.0.0.1:8080'
    ```
+
+
+
+
+
+
+
+
