@@ -1,5 +1,9 @@
 # 这个文档用来记录一些 linux 的命令
 
+
+[vim 的使用](vim_info.md)
+
+
 ***
 ### 显示磁盘空间大小
 `df -h`
@@ -12,6 +16,9 @@
 每10s执行一次命令
 `watch -n 10 nvidia-smi`
 
+有一个简单好用的小工具 gpustat  可以简单地对GPU进行观测
+使用 `pip install gpustat`即可安装
+安装完成后  使用 `watch --color -n1 gpustat -cpu`
 
 
 ***

@@ -1,4 +1,4 @@
-# Clash_for_Linux 使用教程
+# Clash_for_Linux 使用教程（clash 已删库）
 
 方便直接在服务器上面使用自己的代理
 
