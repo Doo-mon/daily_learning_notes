@@ -10,9 +10,8 @@ __tokenizer 的作用__
 
 __简单记录下目前的进展__
 现在要将图片生成阶段和训练阶段分开
-
-要为生成的图像写一个dataset.py
-还需要改一个model.py 让其能够输出相对应的loss
+要为生成的图像写一个 dataset.py
+还需要改一个 model.py 让其能够输出相对应的loss
 
 
 

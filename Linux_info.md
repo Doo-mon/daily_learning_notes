@@ -22,6 +22,52 @@
 
 
 ***
+### 设置别名
+```shell
+alias ls="ls --color=auto"
+
+alias # 列出shell会话中的所有别名
+
+unalias ls # 删除别名
+```
+
+***
+### 路径相关
+```shell
+pwd # pwd显示绝对路径
+
+cd # cd切换目录
+```
+
+***
+### 复制、移动（重命名）、删除、创建
+请记住，在Linux中，文件夹以正斜杠 (/)结尾
+```shell
+# 复制文件
+cp file_to_copy.txt new_file.txt
+# 使用递归标志复制整个目录
+cp -r dir_to_copy/ new_copy_dir/
+
+# 移动文件
+mv source_file destination_folder/
+# 重命名 同时将其保留在同一目录中
+mv old_file.txt new_named_file.txt
+
+# 删除文件
+rm file_to_copy.txt
+# 删除包含内容的目录 需要使用force（-f）和recursive标志 慎用！！
+rm -rf dir_with_content_to_remove/
+
+# 创建文件夹
+mkdir images/
+# 创建子目录 使用 parent(-p)标记
+mkdir -p images/new/
+# touch 命令可以用来创建文件 也可以修改文件的时间戳
+# 此外还有其他的创建文件的方法
+touch new_files.txt
+``` 
+
+***
 ### 设置和删除软链接
 不要将代码和权重文件放在home下 通常放在data盘下 可以使用在home盘使用软链接
 
@@ -116,15 +162,6 @@ source ~/.bashrc
     6. LANG 和 LC_*: 这些环境变量用于设置语言和地区设置，以影响系统的本地化行为，例如日期格式、字符编码等。
     7. TERM: TERM环境变量定义了终端类型，它用于告诉系统如何正确地显示文本和执行终端操作。
     8. PS1: PS1环境变量定义了命令提示符的外观和格式。你可以自定义它来更改终端中的命令提示符。
-
-***
-### 删除命令 (慎用)
-
-
-递归地删除目录及其下面的文件
-`rm -rf xxx`
-
-
 
 
 

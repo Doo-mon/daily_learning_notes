@@ -2,7 +2,7 @@
 
 方便直接在服务器上面使用自己的代理
 
-[github地址](https://github.com/wanhebin/clash-for-linux)
+<!-- [github地址](https://github.com/wanhebin/clash-for-linux) -->
 
 上面有很详细的步骤 可以直接按照上面的来弄
 
