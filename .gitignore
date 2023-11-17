@@ -21,7 +21,5 @@ temp_*
 *.h
 *.exe
 *.json
-# *.md
-# *.jpg
-# *.png
-# *.txt
+*.zip
+*.rar

@@ -1,17 +1,37 @@
 # Open world Segmentation Record
 
-__tokenizer 的作用__
-1. 将原始的文本转化为模型的输入形式
-2. 生成特殊的标记 比如<CLS>和<SEP>这些标记在预训练和微调中起着重要的作用。例如，在BERT中，<CLS>用于表示文本的开始，而<SEP>用于分隔不同的文本段落 __在lisa中有一个标记<SEG> 用来标记是否进行分割__
-3. 处理不同的语言
-4. 处理特殊的文本形式 比如URL，邮箱地址，数字，日期等
-5. 控制序列长度: tokenizer通常具有截断（truncation）和填充（padding）文本的功能，以确保输入序列具有一致的长度。这对于批量处理数据和确保模型的输入不超出最大长度限制非常重要
+
+<span style="color: red;font-weight: bold;">
+  注意：11-08更新 已经放弃minigpt4方案和grounded-sam方案
+</span>
+
+***
+## 笔记
+1. __tokenizer 的作用__
+   1. 将原始的文本转化为模型的输入形式
+   2. 生成特殊的标记 比如<CLS>和<SEP>这些标记在预训练和微调中起着重要的作用。例如，在BERT中，<CLS>用于表示文本的开始，而<SEP>用于分隔不同的文本段落 __在lisa中有一个标记<SEG> 用来标记是否进行分割__
+   3. 处理不同的语言
+   4. 处理特殊的文本形式 比如URL，邮箱地址，数字，日期等
+   5. 控制序列长度: tokenizer通常具有截断（truncation）和填充（padding）文本的功能，以确保输入序列具有一致的长度。这对于批量处理数据和确保模型的输入不超出最大长度限制非常重要
+
+***
+## 进展记录
+
+### 11.08及以前进展
+
+1. LISA/model/ 新添加
+  * my_LISA.py
+    添加 ProjectMLP 类
+
+  * multi_label_contrastive.py 这个只是暂时的文件 
+
+2. LISA/utils/ 新添加
+  * diffusion_imgs_dataset.py 新写的数据集
+  * my_func.py 里面有两个函数 一个是获取图像路径的 一个是由mask得到框图的函数（这个函数可能还需要进行一些改进，比如屏蔽掉一些比较小的mask）
+
+3. LISA/ 新添加
 
 
-__简单记录下目前的进展__
-现在要将图片生成阶段和训练阶段分开
-要为生成的图像写一个 dataset.py
-还需要改一个 model.py 让其能够输出相对应的loss
 
 
 
@@ -19,35 +39,144 @@ __简单记录下目前的进展__
 
 
 
-## Step.0 其他一些相关信息的网站，放在这里方便查询
-[1]()
-[2]()
-[3]()
-[4]()
+
+
+
 
 
 
 
 ***
-## Step.1 首先将 Grounded-Segment-Anything 和 MiniGpt4 在github上下载下来
-[Grounded-sam 项目地址](https://github.com/IDEA-Research/Grounded-Segment-Anything)
+## Step.0 相关网站
+[1]()
+[2]()
+
+
+
+***
+## Step.1 项目地址 及 简单介绍
+<!-- [Grounded-sam 项目地址](https://github.com/IDEA-Research/Grounded-Segment-Anything)
 [Minigpt4 项目地址](https://github.com/Vision-CAIR/MiniGPT-4)
-[Minigpt5 项目地址](https://github.com/eric-ai-lab/MiniGPT-5)
-[Lisa 项目地址](https://github.com/dvlab-research/LISA)
+[Minigpt5 项目地址](https://github.com/eric-ai-lab/MiniGPT-5) -->
+[Lisa - github地址](https://github.com/dvlab-research/LISA)
+论文名： LISA: Reasoning Segmentation via Large Language Model
 
+LISA主要目标是 **推理分割** 其主要的细分功能有如下四个：
+1. 复杂推理
+2. 世界知识
+3. 解释性回答
+4. 多轮对话
+ 
+当仅在无推理数据集上进行训练时，LISA还表现出了强大的零样本能力。此外，仅使用 239 个推理分割图像指令对对模型进行微调，可以进一步提高性能
 
+***
+## Step.2 环境的配置
 
-git clone 代码：
 ```shell
-git clone https://github.com/IDEA-Research/Grounded-Segment-Anything.git 
-git clone https://github.com/Vision-CAIR/MiniGPT-4.git
+pip install -r requirements.txt
+pip install flash-attn --no-build-isolation
+```
+
+
+***
+## Step.3 训练
+
+### 1. 原始训练的数据集
+  1. 语义分割数据集：ADE20K、COCO-Stuff、Mapillary、PACO-LVIS、PSACAL-Part、COCO Images
+  2. 参考分割数据集：refCOCO、refCOCO+、refCOCOg、refCLEF
+  3. 视觉问答数据集：LLaVA-Instruct-150k
+  4. 推理分割数据集：ReasonSeg
+
+在对应的网站上下载后，需要按照github上面的文件夹放置方式放置
+
+### 2. 预训练权重
+  1. LLaVA
+    使用合并后的权重 `LLaVA-Lightning-7B-v1-1` 或者 `LLaVA-13B-v1-1` 
+    （从 `liuhaotian/LLaVA-Lightning-7B-delta-v1-1` 或者 `liuhaotian/LLaVA-13b-delta-v1-1`合并得到）
+    **对于 Llama2, 可以直接使用 LLaVA 的全权重  `liuhaotian/llava-llama-2-13b-chat-lightning-preview`**.
+    <span style="color: red;font-weight: bold;">注意：以上直接在 huggingface 上搜索就能找到</span>
+    
+  2. SAM ViT-H 
+    在github上有链接可以直接下载
+
+### 3. 训练
+
+原训练是直接执行
+```shell
+deepspeed --master_port=24999 train_ds.py \
+  --version="PATH_TO_LLaVA" \
+  --dataset_dir='./dataset' \
+  --vision_pretrained="PATH_TO_SAM" \
+  --dataset="sem_seg||refer_seg||vqa||reason_seg" \
+  --sample_rates="9,3,3,1" \
+  --exp_name="lisa-7b"
+```
+训练结束之后 通过以下命令获得全模型权重 保存为 pytorch_model.bin
+
+```shell
+cd ./runs/lisa-7b/ckpt_model && python zero_to_fp32.py . ../pytorch_model.bin
+```
+
+<span style="color: red;font-weight: bold;">注意：以下为新的训练</span>
+**新改写的 my_train_script.py 训练文件**
+利用deepspeed进行单机多卡操作 include localhost: 指定使用的GPU
+dataset 是指定用sd生成的数据
+diffusion_imgs_data 是指定文件夹的名字
+vision_pretrained 是SAM的路径
+
+```shell
+deepspeed --include localhost:0,1,2,3 --master_port 23333 my_train_script.py \
+ --exp_name="lisa-sd" \
+ --version="/home/xuhang/zhanzhihao/new_data_storage/LISA-13B-llama2-v1" \
+ --vision_pretrained="/home/xuhang/zhanzhihao/new_data_storage/sam_vit_h_4b8939.pth" \
+ --dataset_dir="./dataset" \
+ --dataset="diffusion_imgs" \
+ --diffusion_imgs_data="imgs_from_stablediffusion"
 ```
 
 
 
+### 4. 合并 LoRA 权重
+合并LoRA权重，以huggingface的格式 保存模型
+**注意这个 --weight 参数  这个是自己训练出来的**
+
+```shell
+CUDA_VISIBLE_DEVICES="" python3 merge_lora_weights_and_save_hf_model.py \
+--version="./LLaVA/LLaVA-Lightning-7B-v1-1" \
+--weight="lisa-7b/pytorch_model.bin" \
+--save_path="./LISA-7B"
+```
 
 
-***
+### 5.验证
+```shell
+deepspeed --master_port=24999 train_ds.py \
+  --version="PATH_TO_LISA_HF_Model_Directory" \
+  --dataset_dir='./dataset' \
+  --vision_pretrained="PATH_TO_SAM" \
+  --exp_name="lisa-7b" \
+  --eval_only
+```
+
+## Step.4 新：生成图片
+通过 `generate_images.py` 进行生成 需要提前下载好 sd-1-5 的权重
+需要提前指定生成的物体类别
+生成的图片以如下的形式进行存放
+```
+----imgs_from_stablediffusions
+    ---- 可操纵部件名1
+        ---- 物体类别1
+        ---- 物体类别2
+    ---- 可操纵部件名2
+        ---- 物体类别3
+        ---- 物体类别4
+    ......
+```
+`control_img_3d.py` 文件需要 diffusers 库
+
+
+
+<!-- ***
 ## Step.2 然后分别进行环境的配置和模型参数的下载
 
 ### 1. Grounded-Segment-Anything
@@ -105,12 +234,6 @@ python grounded_sam_demo.py \
   --device "cuda"
 ```
 
-
-
-
-
-
-
 ### 2. MiniGPT4
 
 这个项目比较特殊，使用的是 environment.yml 进行环境的创建 这个文件存储的是类似字典格式
@@ -136,7 +259,7 @@ python grounded_sam_demo.py \
 
 
 
-   2. __旧的（暂时不需要看）__  
+   2. __旧的（暂时不需要看）__   -->
     
 <!-- 
       在minigpt4项目中有一个PrepareVicuna.md文件介绍 这里将其在重复描述一下
@@ -157,7 +280,7 @@ python grounded_sam_demo.py \
 
 
 
-### 3. LISA
+<!-- ### 3. LISA
 
 lisa的准备比较简单，直接使用原来的环境就行了，主要是权重需要提前下载好
 运行的时候报什么错就 pip 安装就行
@@ -182,10 +305,6 @@ lisa的准备比较简单，直接使用原来的环境就行了，主要是权�
 
 
 
-
-
-
-
 ***
 ## Step.4 目前需要注意的问题
 
@@ -202,20 +321,7 @@ peft （这个刚开始安装的时候略微有点问题，后面好像就可以
 gradio（去掉）这个安装起来特别地慢 最好不要安装 在最后考虑要进行网页可视化的时候在弄
 
 
-
-
-
-
-
 ***
-## Step.5 踩的坑
+## Step.5 坑
 
-在使用 groudingdino 的时候 会报无法导入 _C 的错误：
-
-
-
-
-
-
-....
-
+.... -->

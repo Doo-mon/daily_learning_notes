@@ -1,7 +1,8 @@
 # 这个文档用来记录一些 linux 的命令
 
 
-[vim 的使用](vim_info.md)
+[vim文本编辑器使用](./others/vim_info.md)
+[shell脚本使用](./others/shell_info.md)
 
 
 ***
@@ -66,6 +67,13 @@ mkdir -p images/new/
 # 此外还有其他的创建文件的方法
 touch new_files.txt
 ``` 
+
+***
+### 设置和删除软链接
+
+```shell
+sudo apt install xxx
+```
 
 ***
 ### 设置和删除软链接
