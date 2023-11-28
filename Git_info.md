@@ -242,11 +242,11 @@ git rebase main
 
 ```
 
-Merge 
+**Merge** 
 + 优点——不会破坏原分支的提交历史 方便回溯和查看
 + 缺点——会产生额外的提交节点，分支图比较复杂
 
-Rebase
+**Rebase**
 + 优点——不会新增额外的提交记录，形成线性历史，比较直观和干净
 + 缺点——会改变提交历史，改变了当前分支branch out的节点 ！避免在共享分支上使用！
 
@@ -256,19 +256,11 @@ Rebase
 <img src=./images/git/github_gitflow.png width=90%>
 </p>
 
-
-
 [gitflow 介绍](https://www.atlassian.com/zh/git/tutorials/comparing-workflows/gitflow-workflow)
 
 此外还有github flow
 
 </details>
-
-
-
-
-
-
 
 
 ***
@@ -293,7 +285,7 @@ Rebase
 ***
 ## 大文件管理  git lfs
 
-   **git 适合用来管理文本文件  （.sh .txt  .cpp .go .js 等等**
+   **git 适合用来管理文本文件  (.sh .txt  .cpp .go .js 等等)**
    **但不适合用来管理二进制文件 (.zip .png .docx .dpf .pptx 等等)**
    
    尤其当这些二进制文件频繁变更的时候  这时不但库大小会增加 下载速度也会变的很慢

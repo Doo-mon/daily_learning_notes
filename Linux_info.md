@@ -28,7 +28,6 @@
 alias ls="ls --color=auto"
 
 alias # 列出shell会话中的所有别名
-
 unalias ls # 删除别名
 ```
 
@@ -175,7 +174,7 @@ zip -r -s 10m archive.zip folder/
 ***
 ### 查看和修改系统变量
 
-查看特定的变量——  VARIABLE_NAME 为需要查看的变量名字
+查看特定的变量:  VARIABLE_NAME 为需要查看的变量名字
 `echo $VARIABLE_NAME`
 
 查看全部变量
