@@ -1,8 +1,8 @@
 # 这个文档用来记录一些 linux 的命令
 
 
-[vim文本编辑器使用](./others/vim_info.md)
-[shell脚本使用](./others/shell_info.md)
+[vim 文本编辑器使用](./others/vim_info.md)
+[shell 脚本使用](./others/shell_info.md)
 
 
 ***
@@ -104,8 +104,6 @@ sudo apt install xxx
 这将删除当前工作目录中的名为link的软链接。
 
 请注意，删除软链接文件只会断开链接，不会影响目标文件或目录。如果您删除了软链接，目标文件或目录仍然存在，不受影响。确保在删除软链接时小心，以免意外删除了重要的数据。
-
-
 
 
 ***
