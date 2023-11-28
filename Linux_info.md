@@ -107,6 +107,43 @@ sudo apt install xxx
 请注意，删除软链接文件只会断开链接，不会影响目标文件或目录。如果您删除了软链接，目标文件或目录仍然存在，不受影响。确保在删除软链接时小心，以免意外删除了重要的数据。
 
 
+
+
+***
+### zip 解压缩
+
+**安装**
+```shell
+sudo apt-get update
+sudo apt-get install zip unzip
+```
+**压缩**
+```shell
+# 压缩单个文件
+zip archive.zip file.txt
+# 压缩多个文件
+zip archive.zip file1.txt file2.txt ...
+# 压缩整个目录 包括子目录
+zip -r archive.zip folder/
+```
+**解压**
+```shell
+# 解压到当前目录
+unzip archive.zip
+# 解压到指定目录
+unzip archive.zip -d /path/to/directory
+# 不解压 仅列出文件内容
+unzip -l archive.zip
+
+```
+**高级用法**
+```shell
+# 排除特定文件
+zip -r archive.zip folder/ -x folder/exclude.txt
+# 分割大型zip文件 每个分卷大小为10mb
+zip -r -s 10m archive.zip folder/
+```
+
 ***
 ### 联合使用nohup和&让进程后台运行
 
