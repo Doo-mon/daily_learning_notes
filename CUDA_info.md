@@ -94,5 +94,5 @@ cat /usr/local/cuda/include/cudnn.h | grep CUDNN_MAJOR -A 2 #查看cudnn 版本,
 
 直接输入 `source switch-cuda.sh` 会自动输出所有 `/usr/local` 中的CUDA版本
 
-__如何需要切换版本 则输入以下示例代码__
+__如果需要切换版本 则输入以下示例代码__
 `source switch-cuda.sh 11.2`

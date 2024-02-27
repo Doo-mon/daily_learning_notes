@@ -5,6 +5,7 @@
 # 最后跟 反斜杠 表示忽略的是目录
 ignore_files/
 cpp_codes/
+.vscode/
 
 # 取反
 # !ignore_files/diary.md

@@ -1,8 +1,13 @@
 # 这个文档用来记录一些 linux 的命令
 
+##### 一、其他
+[vim 文本编辑器使用文档](./others/vim_info.md)
+[shell 脚本使用文档](./others/shell_info.md)  ----   [shell 教程网址](https://bash.cyberciti.biz/guide/Main_Page)
 
-[vim 文本编辑器使用](./others/vim_info.md)
-[shell 脚本使用](./others/shell_info.md)
+##### 二、常用命令快速跳转
+[压缩](#zip-解压缩)
+[别名](#设置别名)
+
 
 
 ***
@@ -11,6 +16,25 @@
 
 `du -h --max-depth=1`
 
+
+***
+### 信息显示
+
+
+```shell
+# 显示当前登录的用户名
+whoami
+# 显示当前用户的id以及所属用户组的信息
+id
+# 显示当前用户环境变量
+env
+```
+注：id 命令一般显示三个信息
+UID（用户ID）：这是一个唯一的数字，用来识别系统上的每个用户。例如，uid=1000(username) 表示当前用户的用户名是 username，其唯一的用户ID是 1000。
+
+GID（组ID）：这同样是一个唯一的数字，用来识别用户所属的主要组。例如，gid=1000(usergroup) 表示当前用户属于名为 usergroup 的组，该组的唯一组ID是 1000。
+
+所属组（Groups）：用户还可以属于其他附加组，这些组也会被显示出来。例如，groups=1000(usergroup),27(sudo),... 显示了用户所属的所有组及其组ID。
 
 ***
 ### 周期性执行命令
@@ -22,10 +46,54 @@
 安装完成后  使用 `watch --color -n1 gpustat -cpu`
 
 
+
+
+***
+### ~./bashrc 文件介绍
+**可以使用这个文件自定义 bash shell 环境**
+通常这个文件中有三种东西：
+1. 环境变量
+2. 函数
+3. 别名
+
+
+***
+### 文件权限
+
+使用`chmod`命令更改文件或目录的访问权限
+**权限包括读（r）、写（w）、执行（x）权限，分别对应于用户（u）、组（g）、其他（o）**
+只有文件的所有者或超级用户（root）才能更改文件权限
+
+示例：
+```shell
+# 1. 符号模式
+# 将文件 filename 的权限设置为所有者可读写执行（rwx），组可读执行（rx），其他用户只读（r）
+chmod u=rwx,g=rx,o=r fliename
+# 给文件所有者添加执行权限
+chmod u+x filename
+
+# 2. 八进制模式 读（r）= 4，写（w）= 2，执行（x）= 1
+#  设置文件权限为所有者可读写执行（7 = 4+2+1），组和其他用户可读执行（5 = 4+1）
+chmod 755 filename
+
+# 3. 递归修改
+chmod -R 755 directory # 将目录 directory 及其内部所有文件和子目录的权限设置为755
+```
+
+
+
 ***
 ### 设置别名
 ```shell
 alias ls="ls --color=auto"
+
+# 设置多条命令
+# 使用分号 (;): 分号用于顺序执行命令，无论前一个命令是否成功执行。
+alias myalias='command1; command2'
+# 使用 &&: 只有当第一个命令成功执行（即返回值为 0）时，第二个命令才会执行。
+alias myalias='command1 && command2'
+# 使用 ||: 如果第一个命令失败（即返回值非 0），则执行第二个命令。
+alias myalias='command1 || command2'
 
 alias # 列出shell会话中的所有别名
 unalias ls # 删除别名
@@ -66,13 +134,6 @@ mkdir -p images/new/
 # 此外还有其他的创建文件的方法
 touch new_files.txt
 ``` 
-
-***
-### 设置和删除软链接
-
-```shell
-sudo apt install xxx
-```
 
 ***
 ### 设置和删除软链接
@@ -167,6 +228,24 @@ zip -r -s 10m archive.zip folder/
 来源：https://sunkingyang.blog.csdn.net/article/details/113880132?spm=1001.2014.3001.5502
 
 
+***
+### 执行shell脚本
+在Linux和类Unix系统中，`source` 命令和 `bash` 命令都用于执行shell脚本，但它们在行为上有重要的区别
+
+#### source 命令
++ 执行环境：source 命令（在某些shell中也称为 . 命令）在当前shell环境中执行指定的脚本文件。这意味着脚本中的所有变量和函数将在当前shell会话中可用。
++ 影响当前环境：使用 source 执行的脚本可以修改当前shell的环境，例如改变目录、设置环境变量等。
++ 没有新的进程：执行脚本时，不会创建新的shell进程。
+
+
+#### bash 命令
++ 执行环境：使用 bash 命令执行脚本时，会启动一个新的bash子进程，并在这个子进程中执行脚本。
++ 不影响当前环境：脚本在子进程中执行，所以它不会直接修改当前shell的环境。脚本执行完毕后，任何设置或更改（如变量的赋值）都会随着子进程的结束而消失。
++ 创建新的进程：执行脚本会创建一个新的shell进程。
+
+**使用场景：通常当你想要执行一个脚本并保留其设置（如环境变量或定义的函数）时，你会使用 source。而当你只是想运行脚本而不影响当前环境时，你会使用 bash**
+
+
 
 
 ***
@@ -181,17 +260,23 @@ zip -r -s 10m archive.zip folder/
 `env | grep VARIABLE_NAME`
 
 
-直接在终端修改系统变量 （登出后就失效）
+1. **临时修改** 直接在终端修改系统变量 （登出后就失效）
 `export PATH=PATH:/xxxxxx  # 表示在原有PATH上面添加新的PATH 冒号起到分隔作用` 
 
-直接修改文件
+2. **永久修改** 直接修改文件
 修改 ~/.bashrc 或 ~/.bash_profile或系统级别的/etc/profile，在文件中加入环境变量
 ```shell
 vim ~/.bashrc 
-export PATH=/opt/ActivePython-2.7/bin:$PATH
+export PATH=/opt/ActivePython-2.7/bin:$PATH # 在文件末尾添加
 source ~/.bashrc 
 ```
 注：Source命令也称为“点命令”，也就是一个点符号（.）source命令通常用于重新执行刚修改的初始化文件，使之立即生效，而不必注销并重新登录
+
+
+**注意：**
+1. 选择正确的文件：.bashrc 通常用于非登录shell（如打开一个新的终端窗口），而 .bash_profile 或 .profile 用于登录shell（如通过SSH登录）。在某些系统中，这些文件可能会相互调用。
+2. 环境变量的命名：环境变量名通常使用大写字母，以区别于普通的shell变量。
+
 
 
 **一些常见的系统变量解释：**
