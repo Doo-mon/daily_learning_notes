@@ -6,9 +6,11 @@
 [conda 使用相关](./others/conda_info.md)
 
 ##### 二、常用命令快速跳转
-[压缩](#zip-解压缩)
+[压缩](#解压缩)
 [别名](#设置别名)
 [软连接](#设置和删除软链接)
+[进程守护](#使用-screentmux-开进程守护)
+[ssh密钥登录](#ssh公钥-免密登录)
 
 
 ***
@@ -16,6 +18,33 @@
 `df -h`
 
 `du -h --max-depth=1`
+
+
+
+
+***
+### 使用 screen/tmux 开进程守护
+
+
+screen和tmux都是在Linux和Unix系统中用于会话管理的终端复用器。它们允许你在单个终端窗口中运行多个终端会话，且可以在会话之间来回切换。更重要的是，它们让你能够在后台运行程序（即使终端会话关闭也不会影响程序运行）
+
+
+1. **screen**
+
+* 安装 `sudo apt-get install screen`
+* 启动screen会话  `screen -S session_name` 这里session_name是你给会话起的名字，方便以后识别和重新连接
+* 运行程序
+* 断开会话  按下 Ctrl-a 然后按 d，这将会把当前会话放到后台运行
+* 重新连接 screen 会话 `screen -r session_name`
+  
+2. **tmux**
+* 安装 `sudo apt-get install tmux`
+* 启动tmux会话 `tmux new -s session_name`
+* 运行程序
+* 断开会话 按下 Ctrl-b 然后按 d，这将会把当前会话放到后台运行
+* 重新连接 `tmux attach -t session_name`
+
+
 
 
 ***
@@ -171,7 +200,8 @@ touch new_files.txt
 
 
 ***
-### zip 解压缩
+### 解压缩
+如无特殊需要，推荐使用.tar格式的包，因为该格式仅打包不会压缩，而多数情况图片和视频等都无法进一步压缩，因此仅打包不压缩是速度最快、消耗资源最少的打包和解压方式。
 
 **安装**
 ```shell
@@ -204,6 +234,39 @@ zip -r archive.zip folder/ -x folder/exclude.txt
 # 分割大型zip文件 每个分卷大小为10mb
 zip -r -s 10m archive.zip folder/
 ```
+
+
+**其他类型的文件**
+1. 压缩tar和解压tar
+```shell
+# 压缩（具体是指打包，未压缩，非常推荐这种方式，因为压缩/解压都耗时，但是图片等都无法再压缩）
+tar -cf <自定义压缩包名称>.tar <待压缩目录的路径>
+# 解压
+tar -xf <待解压压缩包名称>.tar -C <解压到哪个路径>
+```
+2. 压缩tar和解压tar
+```shell
+# 压缩
+tar -czf <自定义压缩包名称>.tar <待压缩目录的路径>
+# 解压
+tar -xzf <待解压压缩包名称>.tar -C <解压到哪个路径>
+```
+3. 解压rar
+```shell
+#不推荐使用rar的包，linux下非常不常用
+# 解压。如果没有zip命令，安装命令：
+apt-get update && apt-get install -y unrar
+unrar e <待解压压缩包名称>.rar
+```
+
+
+
+
+
+
+
+
+
 
 ***
 ### 联合使用nohup和&让进程后台运行
@@ -302,8 +365,38 @@ source ~/.bashrc
     7. TERM: TERM环境变量定义了终端类型，它用于告诉系统如何正确地显示文本和执行终端操作。
     8. PS1: PS1环境变量定义了命令提示符的外观和格式。你可以自定义它来更改终端中的命令提示符。
 
+***
+### scp 传输文件
+用ssh登录 ssh -p 35394 root@region-1.autodl.com
+远程上传 scp -rP 35394 <本地文件/文件夹> root@region-1.autodl.com:/root/autodl-tmp
+远程下载 scp -rP 35394 root@region-1.autodl.com:/实例中/某个文件或文件夹 <本地文件/文件夹> 
 
 
+
+
+***
+### ssh公钥 免密登录
+为了向 Git 服务器提供 SSH 公钥，如果某系统用户尚未拥有密钥，必须事先为其生成一份
+1. 默认情况下，用户的 SSH 密钥存储在其 ~/.ssh 目录下。 查看是否有密钥 
+`ls -al ~/.ssh`
+
+2. 如果找不到这样的文件（或者根本没有 .ssh 目录），你可以通过运行 ssh-keygen 程序来创建它们。 在 Linux/macOS 系统中，ssh-keygen 随 SSH 软件包提供；在 Windows 上，该程序包含于 MSysGit 软件包中。
+
+```shell
+# 生成新的ssh密钥 用github邮箱替换 这将使用提供的电子邮件作为标签创建一个新的 SSH 密钥
+ssh-keygen -t ed25519 -C "your_email@example.com" 
+# 如果你使用的是不支持 Ed25519 算法的旧系统，请使用以下命令
+ssh-keygen -t rsa -b 4096 -C "your_email@example.com" 
+```
+
+ 当系统提示您“Enter a file in which to save the key（输入要保存密钥的文件）”时，可以按 Enter 键接受默认文件位置。 请注意，如果以前创建了 SSH 密钥，则 ssh-keygen 可能会要求重写另一个密钥，在这种情况下，我们建议创建自定义命名的 SSH 密钥。 为此，请键入默认文件位置，并将 id_ALGORITHM 替换为自定义密钥名称。
+`> Enter a file in which to save the key (/home/YOU/.ssh/id_ALGORITHM):[Press enter]`
+
+3. 然后它会要求你输入两次密钥口令。 如果你不想在使用密钥时输入口令，将其留空即可。你也可以用 ssh-agent 工具来避免每次都要输入密码。
+
+4. 将ssh密钥添加到ssh-agent
+    在后台启动 `eval "$(ssh-agent -s)"`
+    将私钥添加到ssh-agent `ssh-add ~/.ssh/id_ed25519`
 
 
 

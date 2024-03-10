@@ -1,5 +1,61 @@
 ## CUDA 配置
 
+
+
+```shell
+# 查询平台内置镜像中的cuda版本
+ldconfig -p | grep cuda
+        libnvrtc.so.11.0 (libc6,x86-64) => /usr/local/cuda-11.0/targets/x86_64-linux/lib/libnvrtc.so.11.0
+        libnvrtc.so (libc6,x86-64) => /usr/local/cuda-11.0/targets/x86_64-linux/lib/libnvrtc.so
+        libnvrtc-builtins.so.11.0 (libc6,x86-64) => /usr/local/cuda-11.0/targets/x86_64-linux/lib/libnvrtc-builtins.so.11.0
+
+# 查询平台内置镜像中的cudnn版本
+ldconfig -p | grep cudnn
+        libcudnn_ops_train.so.8 (libc6,x86-64) => /usr/lib/x86_64-linux-gnu/libcudnn_ops_train.so.8
+        libcudnn_ops_train.so (libc6,x86-64) => /usr/lib/x86_64-linux-gnu/libcudnn_ops_train.so
+        libcudnn_ops_infer.so.8 (libc6,x86-64) => /usr/lib/x86_64-linux-gnu/libcudnn_ops_infer.so.8
+        libcudnn_ops_infer.so (libc6,x86-64) => /usr/lib/x86_64-linux-gnu/libcudnn_ops_infer.so
+```
+上边的输出日志.so后的数字即为版本号。如果你通过conda安装了cuda那么可以通过以下命令查看
+```shell
+conda list | grep cudatoolkit
+cudatoolkit               10.1.243             h6bb024c_0    defaults
+
+conda list | grep cudnn
+cudnn                     7.6.5                cuda10.1_0    defaults
+```
+
+### 安装其他版本的CUDA和cuDNN
+1. 用conda 安装 优点是简单 缺点是一般不会带头文件 如果需要编译用安装包的方式来安装
+```shell
+conda install cudatoolkit==xx.xx
+conda install cudnn==xx.xx
+```
+
+2. 下载安装包安装
+CUDA下载地址：https://developer.nvidia.com/cuda-toolkit-archive
+```shell
+# 下载.run格式的安装包后：
+chmod +x xxx.run   # 增加执行权限
+./xxx.run          # 运行安装包
+```
+
+
+
+cuDNN下载地址：https://developer.nvidia.com/cudnn
+先解压， 后将动态链接库和头文件放入相应目录
+```shell
+mv cuda/include/* /usr/local/cuda/include/
+chmod +x cuda/lib64/* && mv cuda/lib64/* /usr/local/cuda/lib64/
+```
+安装完成以后，增加环境变量
+```shell
+echo "export LD_LIBRARY_PATH=/usr/local/cuda/lib64/:${LD_LIBRARY_PATH} \n" >> ~/.bashrc
+source ~/.bashrc && ldconfig
+```
+
+
+
 ### 查看GPU信息
 可以使用以下命令查看GPU是否安装好
 `lspci | grep -i nvidia`

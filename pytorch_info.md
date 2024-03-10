@@ -1,5 +1,18 @@
 # 这个文件用来记录pytorch中的一些信息
 
+
+import torch
+print(torch.version.cuda)
+print(torch.cuda.is_available())
+print(torch.cuda.device_count())
+print(torch.cuda.get_device_name(0))
+
+
+
+
+
+
+
 ***
 ### cat 和 stack 的区别
 <details>   

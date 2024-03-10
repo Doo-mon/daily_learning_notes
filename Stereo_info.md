@@ -1,8 +1,183 @@
 # Stereo Images Record 双目图像超分
 
+## 别想太多 做了再说！
+
+**现在已经完成的事情:**
+
+:smile: 对于 Flickr1024以及其他数据集（暂时还没测试可行性）处理的代码已经完成
+:smile: 训练和测试已经完成
+:smile: 拿到一个新的服务器 6张 2080ti 环境已经配好 还剩下数据没上传
+:smile: 梁老师那边21073服务器 还需要上传数据集 以及配环境
+:smile: 已经拿到租服务器的资金 可以过段时间去看看
+
+:book: 接下来就是改进模型
+
+:book: 如果要自己租服务器的话 最好是去租一张3090一周大概需要230元
+:book: 过几天去问一下学长10924服务器的新密钥
+
+:cry: 20847暂时用不了 过段时间看看情况 但是可以先把数据先传上去
 
 
 
+***
+
+:exclamation: **需要把 batch_size_per_gpu 调低 单张 2080ti 的容量最多支持 3** 
+把 batch_size 调低 如果iter总数不变的话，会导致训练度不够
+理论上 batch_size 减半 对应的 iter 就要翻倍才可以
+
+```shell
+# pytorch对应版本的安装
+conda install pytorch==1.11.0 torchvision==0.12.0 torchaudio==0.11.0 cudatoolkit=11.3 -c pytorch
+```
+
+```shell
+pip install -r requirements.txt
+python setup.py develop --no_cuda_ext 
+# develop 开发者模式可以之间反映修改
+# --no_cuda_ext 这是传递给setup.py脚本的自定义选项，用于指示安装过程中跳过编译CUDA扩展。
+```
+
+
+
+在学校的服务器上 添加了一些别名方便直接调用： 修改位置 ~/.bashrc
+ac = conda activate zhanzhihao
+dc = conda deactivate
+cdsr = 切换到工作目录
+
+先在本地修改好 git commit 和 git push 上去
+然后在服务器上 git pull 下来再运行
+
+
+训练命令
+```shell
+CUDA_VISIBLE_DEVICES=3,4 python -m torch.distributed.launch --nproc_per_node=2 --master_port=4321 train.py
+```
+
+测试命令
+```shell
+python -m torch.distributed.launch --nproc_per_node=1 --master_port=4321 test.py -opt ./options/temp_test_4x.yml --launcher pytorch
+```
+
+**如果训练中断了 直接重新训就行 不需要在配置文件中写路径 代码里面会自己找**
+
+
+源代码中有一个计算两张图片之间ssim值的函数 有点问题 进行了一点修改
+（初步估计可能是cv2和pillow读取图像之间的差异导致）
+
+
+训练的时候有 43982 对训练样本 （每对4张图片）
+设置批量大小为 2对   （因为显存容量太少）
+每个epoch则需要 21991 个iter 才能便利完所有训练样本
+
+
+
+***
+## 如何在一个新的地方开始训练
+:exclamation: 如果是连miniconda都没有的服务器
+
+
+```shell
+echo 'alias ac='conda activate zhanzhihao'' >> ~/.bashrc
+echo 'alias dc='conda deactivate'' >> ~/.bashrc
+echo 'alias cdsr='cd ~/stereo_sr'' >> ~/.bashrc
+source ~/.bashrc
+```
+
+
+```shell
+mkdir -p ~/miniconda3
+wget https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh -O ~/miniconda3/miniconda.sh
+bash ~/miniconda3/miniconda.sh -b -u -p ~/miniconda3
+~/miniconda3/bin/conda init bash
+# 然后需要关闭重启一下
+conda # 出现提示则说明安装成功
+conda create -n zhanzhihao python=3.8
+conda activate zhanzhihao
+# 接下来配环境
+conda install pytorch==1.11.0 torchvision==0.12.0 torchaudio==0.11.0 cudatoolkit=11.3 -c pytorch # 安装pytorch
+
+cd ~
+git clone https://github.com/Doo-mon/stereo_sr.git # clone 仓库
+cd ~/stereo_sr
+pip install -r requirements.txt # 安装依赖包
+python setup.py develop --no_cuda_ext # 将basicsr模块导入
+
+# 执行训练代码可能还会有部分报错 根据实际报错install对应的包就行
+```
+**然后就是准备训练数据**
+
+```shell
+mkdir ~/stereo_sr/datasets
+# 放置好数据集的zip文件后
+cd ~
+bash ~/stereo_sr/scripts/data_preparation/process_Flickr1024.sh
+```
+
+
+
+***
+
+## 项目中各个文件的作用
+
+| **stereo_sr (暂时的名字)**
+| ---- train.py **(启动训练的代码)**
+| ---- test.py **(测试的代码)**
+| ---- predict.py **(这个应该暂时没有用)**
+|
+| ---- **basicsr (主要的模型代码文件夹)**
+| -------- *data* **(主要是 dataset 和 dataloader 的定义)**
+| ------------ \_\_init__.py
+| -------- *metrics* **(主要是评价指标的定义)**
+| ------------ \_\_init__.py
+| -------- *utils* **(主要是小工具的定义)**
+| ------------ \_\_init__.py
+| -------- *models*
+| ------------ \_\_init__.py
+| ------------ base_model.py **(模型基类 定义了一些必需的函数)**
+| ------------ image_restoration_model.py **(这是训练中主要调用的类，但是这个和上面那个文件有关联 同时具体的网络架构定义用从 archs 导入的 define_network 函数确定)**
+| ------------ lr_scheduler.py
+| ------------ *archs*
+| ---------------- \_\_init__.py
+| ---------------- arch_util.py
+| ---------------- local_arch.py
+| ---------------- Baseline_arch.py
+| ---------------- NAFNet_arch.py
+| ---------------- NAFSSR_arch.py
+| ------------ *losses*
+| ---------------- \_\_init__.py
+| ---------------- loss_util.py
+| ---------------- losses.py
+|
+| ---- **options (训练和测试的配置文件)**
+| -------- temp_test_4x.yml
+| -------- temp_train_4x.yml
+|
+| ---- **scripts (一些数据处理的代码)**
+| -------- *data_preparation*
+| ------------ process_Flickr1024.sh
+| ------------ train_data_process.py
+| ------------ val_test_data_process.py
+| -------- make_pickle.py
+|
+| ---- **datasets (不会随着git保存)**
+| -------- *Flickr1024* **(原始数据文件 非必要存在 用处理代码处理完后可删)**
+| -------- *train_data*
+| ------------ *patches_x4*
+| ------------ *patches_x2*
+| -------- *val_data*
+| ------------ *hr*
+| ------------ *lr_x2*
+| ------------ *lr_x4*
+| -------- *test_data*
+| ------------ *Flickr1024*
+| ---------------- *hr*
+| ---------------- *lr_x2*
+| ---------------- *lr_x2*
+
+
+
+
+***
 
 [Implementation](#implementation-details)
 ***

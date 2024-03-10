@@ -9,6 +9,7 @@ github 是一个远程存储仓库 使用`git clone`**克隆到本地文件夹�
 [具体教程](#具体教程)
 [远程仓库操作](#远程仓库操作)
 [大文件管理](#大文件管理-git-lfs)
+[强制拉取](#强制拉取-覆盖本地)
 
 [问题](#遇到的问题)
 
@@ -281,6 +282,34 @@ git rebase main
 移除远程仓库
 `git remote remove myrepo`
 
+
+
+
+***
+## 强制拉取 覆盖本地
+使用这个之前 最好将本地的文件上传或者备份一件
+
+1. 方法一 
+```shell
+git fetch origin
+git reset --hard origin/master
+```
+git fetch origin 命令会从远程仓库拉取最新的内容，但不会自动合并到你的工作目录中。
+git reset --hard origin/master 命令会重置你的当前分支的HEAD到远程仓库的master分支上的最新提交。这里假设你想要强制更新的是master分支。如果是其他分支，需要将master替换为相应的分支名。
+
+2. 方法二
+```shell
+git fetch --all
+git reset --hard @{u}
+```
+git fetch --all会从所有远程仓库拉取最新内容。
+git reset --hard @{u}中的@{u}或@{upstream}是一个引用，指向当前分支跟踪的上游分支（通常是远程仓库的相应分支）
+
+**注意**
+使用这些命令会丢失所有本地未提交的更改和提交（如果有的话），请谨慎操作。如果不确定，可以先使用git stash来保存你的本地更改
+`git stash push -m "保存的更改描述"`
+然后进行强制拉取。如果你之后想要恢复这些更改，可以使用：
+`git stash pop`
 
 ***
 ## 大文件管理  git lfs
