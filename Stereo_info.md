@@ -1,29 +1,50 @@
 # Stereo Images Record 双目图像超分
 
-## 别想太多 做了再说！
 
-**现在已经完成的事情:**
+## 想全是问题，做才有答案 ！
 
-:smile: 对于 Flickr1024以及其他数据集（暂时还没测试可行性）处理的代码已经完成
+<!-- **现在已经完成的事情:**
+
+:smile: 对于 Flickr1024 以及其他数据集处理的代码已经完成
 :smile: 训练和测试已经完成
-:smile: 拿到一个新的服务器 6张 2080ti 环境已经配好 还剩下数据没上传
-:smile: 梁老师那边21073服务器 还需要上传数据集 以及配环境
-:smile: 已经拿到租服务器的资金 可以过段时间去看看
+:smile: 拿到一个新的服务器 6张 2080ti 环境已经配好
+:smile: 梁老师那边21073服务器 已经可以进行训练
 
+
+:book: 尽量早点把数据和环境在各个位置放好，估计很快就要大规模训练
 :book: 接下来就是改进模型
 
 :book: 如果要自己租服务器的话 最好是去租一张3090一周大概需要230元
 :book: 过几天去问一下学长10924服务器的新密钥
 
-:cry: 20847暂时用不了 过段时间看看情况 但是可以先把数据先传上去
+:cry: 20847暂时用不了 过段时间看看情况 但是可以先把数据先传上去 -->
 
+
+
+:exclamation: 如果要训练最大的那个模型的话，估计得要用3090来训
+然后batch_size可能需要调低一点
+
+
+把 batch_size 调低 如果iter总数不变的话，会导致训练度不够
+理论上 batch_size 减半 对应的 iter 就要翻倍才可以
 
 
 ***
 
-:exclamation: **需要把 batch_size_per_gpu 调低 单张 2080ti 的容量最多支持 3** 
-把 batch_size 调低 如果iter总数不变的话，会导致训练度不够
-理论上 batch_size 减半 对应的 iter 就要翻倍才可以
+
+<!--
+
+from ptflops import get_model_complexity_info
+
+    macs, params = get_model_complexity_info(net, inp_shape, verbose=False, print_per_layer_stat=False)
+
+    params = float(params[:-3])
+    macs = float(macs[:-4])
+
+    print(macs, params) 
+-->
+
+
 
 ```shell
 # pytorch对应版本的安装
@@ -31,6 +52,7 @@ conda install pytorch==1.11.0 torchvision==0.12.0 torchaudio==0.11.0 cudatoolkit
 ```
 
 ```shell
+# 
 pip install -r requirements.txt
 python setup.py develop --no_cuda_ext 
 # develop 开发者模式可以之间反映修改
@@ -48,14 +70,14 @@ cdsr = 切换到工作目录
 然后在服务器上 git pull 下来再运行
 
 
-训练命令
+**训练命令**
 ```shell
-CUDA_VISIBLE_DEVICES=3,4 python -m torch.distributed.launch --nproc_per_node=2 --master_port=4321 train.py
+CUDA_VISIBLE_DEVICES=3,4 python -m torch.distributed.launch --nproc_per_node=2 --master_port=4321 train.py -opt ./options/train_4x_base_model_T.yml
 ```
 
-测试命令
+**测试命令**
 ```shell
-python -m torch.distributed.launch --nproc_per_node=1 --master_port=4321 test.py -opt ./options/temp_test_4x.yml --launcher pytorch
+CUDA_VISIBLE_DEVICES=3 python -m torch.distributed.launch --nproc_per_node=1 --master_port=4321 test.py -opt ./options/test_4x_base_model_T.yml --launcher pytorch
 ```
 
 **如果训练中断了 直接重新训就行 不需要在配置文件中写路径 代码里面会自己找**
@@ -63,11 +85,6 @@ python -m torch.distributed.launch --nproc_per_node=1 --master_port=4321 test.py
 
 源代码中有一个计算两张图片之间ssim值的函数 有点问题 进行了一点修改
 （初步估计可能是cv2和pillow读取图像之间的差异导致）
-
-
-训练的时候有 43982 对训练样本 （每对4张图片）
-设置批量大小为 2对   （因为显存容量太少）
-每个epoch则需要 21991 个iter 才能便利完所有训练样本
 
 
 
@@ -177,9 +194,7 @@ bash ~/stereo_sr/scripts/data_preparation/process_Flickr1024.sh
 
 
 
-***
 
-[Implementation](#implementation-details)
 ***
 ## 前期的调研
 
@@ -235,7 +250,7 @@ bash ~/stereo_sr/scripts/data_preparation/process_Flickr1024.sh
 现实场景的退化——blur downsampling noise compression(jpeg 压缩)
 感知质量和立体一致性对于立体图像的视觉效果也很重要
 
-**从SCNAFSSR中看出，貌似 高PSNR和高立体一致性，是有冲突的**
+**从SC-NAFSSR中看出，貌似 高PSNR和高立体一致性，是有冲突的**
 
 在今年的比赛中，有队伍是使用了sd进行辅助的，可以去参考一下
 
@@ -243,18 +258,12 @@ bash ~/stereo_sr/scripts/data_preparation/process_Flickr1024.sh
 
 
 
-***
-## 一些相关信息的网站
-[1]()
-[2]()
-[3]()
-[4]()
 
 
 
 
 
-***
+<!-- ***
 ## 别人论文中的idea
 
 1. CVGSR: Stereo Image Super-Resolution with Cross-View Guidance
@@ -283,10 +292,10 @@ bash ~/stereo_sr/scripts/data_preparation/process_Flickr1024.sh
 
 
 3. 
+ -->
 
 
-
-
+<!-- 
 ***
 ## Implementation details
 
@@ -304,8 +313,8 @@ Flickr1024 test (112张图)
 Middlebury
 
 
-对图片进行了 切片 分patch 处理
-
+对图片进行了 切片 分patch 处理 -->
+<!-- 
 ***
 ### 2. 评价指标
 
@@ -320,22 +329,19 @@ Middlebury
 
 
 ***
-### 5.
+### 5. -->
 
 
 
-***
+<!-- ***
 ### xx. 对比方法
 
 #### 传统
-+ bicubic
+
 
 #### 单图
-+ 
 
-
-
-#### 双目
+#### 双目 -->
 
 
 

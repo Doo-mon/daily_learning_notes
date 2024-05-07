@@ -10,14 +10,17 @@
 [别名](#设置别名)
 [软连接](#设置和删除软链接)
 [进程守护](#使用-screentmux-开进程守护)
+[后台运行命令](#联合使用nohup和让进程后台运行)
 [ssh密钥登录](#ssh公钥-免密登录)
 
 
 ***
 ### 显示磁盘空间大小
-`df -h`
+`df -h` 查看系统的磁盘空间使用情况
 
-`du -h --max-depth=1`
+`du -h --max-depth=1` 查看当前目录下每个文件夹的大小
+
+`du -sh`  查看当前目录下文件的总大小
 
 
 
@@ -271,23 +274,36 @@ unrar e <待解压压缩包名称>.rar
 ***
 ### 联合使用nohup和&让进程后台运行
 
-一般会习惯性写在 .sh 文件中
+一般会习惯性写在 .sh 文件中 
+ **综合语法：** nohup Command [ Arg ...] [&]
 
 1. nohup
 用途：不挂断地运行命令。
-语法：nohup Command [ Arg ...] [&]
 无论是否将 nohup 命令的输出重定向到终端，输出都将附加到当前目录的 nohup.out 文件中。
 如果当前目录的 nohup.out 文件不可写，输出重定向到 $HOME/nohup.out 文件中。
 如果没有文件能创建或打开以用于追加，那么 Command 参数指定的命令不可调用。
 2. &
 用途：在后台运行
 
-**用法进阶：不输出日志信息到nohup.out**
+**用法进阶：不输出日志信息到 nohup.out (默认输出的文件名)**
 在某些进程中，由于日志量极大，可能达到几百G占满磁盘空间，所以在输出日志是，我们需要筛选输出或者不输出。
-1、只输出错误信息到日志文件
-`nohup ./test.out >/dev/null 2>log & `
-2、所有信息都不输出
-`nohup ./test.out >/dev/null 2>&1 & `
+在Linux系统中0 1 2是一个文件描述符，分别表示 **标准输入 标准输出 标准错误输出**
+
+1. 输出到指定的文件
+```shell
+# 两句是同等效果
+nohup bash ./test.sh >output.log 2>&1 &
+nohup bash ./test.sh >output.log 2>output.log &
+```
+2. 只输出错误信息到日志文件
+```shell
+nohup bash ./test.sh >/dev/null 2>log &
+```
+3. 所有信息都不输出
+```shell
+nohup bash ./test.sh >/dev/null 2>&1 &
+```
+
 
 
 **还有比较多的内容没有完全理解 有空可以继续看一下这个连接的内容**
